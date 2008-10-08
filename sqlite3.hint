@@ -1,0 +1,9 @@
+category: Python Database
+requires: cygwin python sqlite3
+external-source: python
+sdesc: "Python SQLite3 module"
+ldesc: "Python is an interpreted, interactive object-oriented 
+programming language suitable (amongst other uses) for distributed 
+application development, scripting, numeric computing and system 
+testing.  Python is often compared to Tcl, Perl, Java, JavaScript, 
+Visual Basic or Scheme."

@@ -1,0 +1,81 @@
+gentoo_python="overlays.gentoo.org/proj/python/browser/patches"
+
+DESCRIPTION="Python programming language"
+HOMEPAGE="http://www.python.org/"
+SRC_URI="http://www.python.org/ftp/python/${PV}/Python-${PV}.tar.bz2
+		 http://docs.python.org/ftp/python/doc/${PV}/html-${PV}.tar.bz2"
+PATCH_URI="
+	http://${gentoo_python}/${PV}/05_all_mimetypes_gentoo_apache.patch?format=txt
+	http://${gentoo_python}/${PV}/13_all_imageop-int-overflow.patch?format=txt
+	http://${gentoo_python}/${PV}/16_all_zlib-decompressobj_flush-bad-param.patch?format=txt
+	http://${gentoo_python}/${PV}/17_all_pystring-size-fix.patch?format=txt
+	http://${gentoo_python}/${PV}/22_all_internal-expat.patch?format=txt
+	http://${gentoo_python}/${PV}/25_all_CVE-2008-3144.patch?format=txt
+	http://${gentoo_python}/${PV}/26_all_CVE-2008-3142.patch?format=txt
+	http://${gentoo_python}/${PV}/27_all_CVE-2008-2316.patch?format=txt
+	http://${gentoo_python}/${PV}/28_all_CVE-2008-2315.patch?format=txt
+	2.5.2-dbm.patch
+	2.5.2-destdir.patch
+	2.5.2-no-libm.patch
+	2.5.2-ossaudio.patch
+	2.5.2-tkinter-x11.patch
+"
+
+SRC_DIR="Python-${PV}"
+
+slot=${PV_MAJ_MIN}
+pyrootdir=/usr/lib/python${slot}
+pyconfdir=${pyrootdir}/config
+pydylddir=${pyrootdir}/lib-dynload
+
+PKG_NAMES="${PN} ${PN}-doc idle"
+PKG_HINTS="setup doc idle"
+for mod in sqlite3 tkinter test
+do
+	PKG_NAMES+=" ${PN}-${mod}"
+	PKG_HINTS+=" ${mod}"
+done
+unset mod
+n=0
+PKG_CONTENTS[((n++))]="--exclude=idle --exclude=idlelib
+                       --exclude=_sqlite3.dll --exclude=sqlite3
+                       --exclude=_tkinter.dll --exclude=lib-tk
+                       --exclude=test --exclude=tests --exclude=html usr/"
+PKG_CONTENTS[((n++))]="usr/share/doc/${P}/html/"
+PKG_CONTENTS[((n++))]="usr/bin/idle ${pyrootdir#/}/idlelib/"
+PKG_CONTENTS[((n++))]="${pydylddir#/}/_sqlite3.dll ${pyrootdir#/}/sqlite3/*.*"
+PKG_CONTENTS[((n++))]="${pydylddir#/}/_tkinter.dll ${pyrootdir#/}/lib-tk/"
+PKG_CONTENTS[((n++))]="${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/"
+unset n
+DIFF_EXCLUDES="plat-cygwin pyconfig.h.in"
+
+NO_AUTOHEADER=1
+LDFLAGS+=" -L."
+CYGCONF_ARGS="
+	--enable-shared
+	--disable-ipv6
+	--with-libc=
+	--with-libm=
+"
+
+src_install() {
+	cd ${B}
+	dodir /usr
+	cygmake -j1 DESTDIR=${D} altinstall maninstall
+
+	dobin ${S}/Tools/i18n/{msgfmt.py,pygettext.py}
+
+	# required for freeze.py
+#	insinto /usr/lib/python${slot}/config
+#	doins libpython${slot}.a
+
+	grep -l '^#!' ${D}/usr/bin/* | xargs sed -i -e "s|^#!.*|#! /usr/bin/python${slot}|"
+
+	dosym python${slot}.exe /usr/bin/python
+	dosym python${slot}-config /usr/bin/python-config
+
+	dosym python${slot}/config/libpython${slot}.dll.a /usr/lib/libpython${slot}.dll.a
+
+	dodir /usr/share/doc/${P}/html
+	cp -r ${S}/../Python-Docs-${PV}/* ${D}/usr/share/doc/${P}/html
+}
