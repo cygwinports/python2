@@ -11,7 +11,7 @@
 +                       '/usr/lib/nspr', '/usr/lib/nss']:
 +            for libext in ['lib%s.dll.a' % name, 'lib%s.a' % name]:
 +                implib = os.path.join(libdir, libext)
-+                if not os.path.exists(os.path.join(implib)):
++                if not os.path.exists(implib):
 +                    continue
 +                cmd = "strings 2>/dev/null " + implib
 +                res = re.search(r'\s+(cyg.*\.dll+)\s', os.popen(cmd).read())
