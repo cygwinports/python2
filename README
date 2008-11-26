@@ -10,28 +10,26 @@ Runtime requirements:
   cygwin-1.5.25-15
   crypt-1.1-1
   libbz2_1-1.0.5-2
+  libdb4.5-4.5.20.2-2
   libexpat1-2.0.1-1
   libgdbm4-1.8.3-8
   libintl8-0.15-1
   libncurses8-5.5-3
   libreadline6-5.2.7-9
+  libsqlite3_0-3.5.9-1
   openssl-0.9.8h-1
   zlib-1.2.3-2
-(python-bsddb)
-  libdb4.5-4.5.20.2-2
-(python-sqlite3)
-  libsqlite3_0-3.5.9-1
 (python-tkinter)
-  tcl-8.4.18-1
+  tcl-8.4.19-2
   tcl-tix-8.4.3-1
-  tk-8.4.18-1
+  tk-8.4.19-3
 
 Build requirements:
 (besides corresponding -devel packages)
-  autoconf2.5-2.61-1
-  automake1.9-1.9.6-2
-  binutils-20080523-2
-  cygport-0.3.12-1
+  autoconf2.5-2.63-1
+  automake1.9-1.9.6-3
+  binutils-20080624-2
+  cygport-0.4.2-1
   gawk-3.1.6-1
   gcc-core-3.4.4-3
   make-3.81-1
@@ -56,8 +54,6 @@ This will create:
   /usr/src/idle-2.5.2-X.tar.bz2
   /usr/src/python-2.5.2-X-src.tar.bz2
   /usr/src/python-2.5.2-X.tar.bz2
-  /usr/src/python-bsddb-2.5.2-X.tar.bz2
-  /usr/src/python-sqlite3-2.5.2-X.tar.bz2
   /usr/src/python-test-2.5.2-X.tar.bz2
   /usr/src/python-tkinter-2.5.2-X.tar.bz2
 
@@ -254,6 +250,27 @@ Files included in the binary packages:
   /usr/lib/python2.5/bisect.py
   /usr/lib/python2.5/bisect.pyc
   /usr/lib/python2.5/bisect.pyo
+  /usr/lib/python2.5/bsddb/__init__.py
+  /usr/lib/python2.5/bsddb/__init__.pyc
+  /usr/lib/python2.5/bsddb/__init__.pyo
+  /usr/lib/python2.5/bsddb/db.py
+  /usr/lib/python2.5/bsddb/db.pyc
+  /usr/lib/python2.5/bsddb/db.pyo
+  /usr/lib/python2.5/bsddb/dbobj.py
+  /usr/lib/python2.5/bsddb/dbobj.pyc
+  /usr/lib/python2.5/bsddb/dbobj.pyo
+  /usr/lib/python2.5/bsddb/dbrecio.py
+  /usr/lib/python2.5/bsddb/dbrecio.pyc
+  /usr/lib/python2.5/bsddb/dbrecio.pyo
+  /usr/lib/python2.5/bsddb/dbshelve.py
+  /usr/lib/python2.5/bsddb/dbshelve.pyc
+  /usr/lib/python2.5/bsddb/dbshelve.pyo
+  /usr/lib/python2.5/bsddb/dbtables.py
+  /usr/lib/python2.5/bsddb/dbtables.pyc
+  /usr/lib/python2.5/bsddb/dbtables.pyo
+  /usr/lib/python2.5/bsddb/dbutils.py
+  /usr/lib/python2.5/bsddb/dbutils.pyc
+  /usr/lib/python2.5/bsddb/dbutils.pyo
   /usr/lib/python2.5/cProfile.py
   /usr/lib/python2.5/cProfile.pyc
   /usr/lib/python2.5/cProfile.pyo
@@ -1074,6 +1091,7 @@ Files included in the binary packages:
   /usr/lib/python2.5/keyword.pyo
   /usr/lib/python2.5/lib-dynload/Python-2.5.2-py2.5.egg-info
   /usr/lib/python2.5/lib-dynload/_bisect.dll
+  /usr/lib/python2.5/lib-dynload/_bsddb.dll
   /usr/lib/python2.5/lib-dynload/_codecs_cn.dll
   /usr/lib/python2.5/lib-dynload/_codecs_hk.dll
   /usr/lib/python2.5/lib-dynload/_codecs_iso2022.dll
@@ -1095,6 +1113,7 @@ Files included in the binary packages:
   /usr/lib/python2.5/lib-dynload/_multibytecodec.dll
   /usr/lib/python2.5/lib-dynload/_random.dll
   /usr/lib/python2.5/lib-dynload/_socket.dll
+  /usr/lib/python2.5/lib-dynload/_sqlite3.dll
   /usr/lib/python2.5/lib-dynload/_ssl.dll
   /usr/lib/python2.5/lib-dynload/_struct.dll
   /usr/lib/python2.5/lib-dynload/_testcapi.dll
@@ -1333,6 +1352,12 @@ Files included in the binary packages:
   /usr/lib/python2.5/socket.py
   /usr/lib/python2.5/socket.pyc
   /usr/lib/python2.5/socket.pyo
+  /usr/lib/python2.5/sqlite3/__init__.py
+  /usr/lib/python2.5/sqlite3/__init__.pyc
+  /usr/lib/python2.5/sqlite3/__init__.pyo
+  /usr/lib/python2.5/sqlite3/dbapi2.py
+  /usr/lib/python2.5/sqlite3/dbapi2.pyc
+  /usr/lib/python2.5/sqlite3/dbapi2.pyo
   /usr/lib/python2.5/sre.py
   /usr/lib/python2.5/sre.pyc
   /usr/lib/python2.5/sre.pyo
@@ -1573,39 +1598,6 @@ Files included in the binary packages:
   /usr/share/doc/python-2.5.2/html/ref/*
   /usr/share/doc/python-2.5.2/html/tut/*
   /usr/share/doc/python-2.5.2/html/whatsnew/*
-
-(python-bsddb)
-  /usr/lib/python2.5/bsddb/__init__.py
-  /usr/lib/python2.5/bsddb/__init__.pyc
-  /usr/lib/python2.5/bsddb/__init__.pyo
-  /usr/lib/python2.5/bsddb/db.py
-  /usr/lib/python2.5/bsddb/db.pyc
-  /usr/lib/python2.5/bsddb/db.pyo
-  /usr/lib/python2.5/bsddb/dbobj.py
-  /usr/lib/python2.5/bsddb/dbobj.pyc
-  /usr/lib/python2.5/bsddb/dbobj.pyo
-  /usr/lib/python2.5/bsddb/dbrecio.py
-  /usr/lib/python2.5/bsddb/dbrecio.pyc
-  /usr/lib/python2.5/bsddb/dbrecio.pyo
-  /usr/lib/python2.5/bsddb/dbshelve.py
-  /usr/lib/python2.5/bsddb/dbshelve.pyc
-  /usr/lib/python2.5/bsddb/dbshelve.pyo
-  /usr/lib/python2.5/bsddb/dbtables.py
-  /usr/lib/python2.5/bsddb/dbtables.pyc
-  /usr/lib/python2.5/bsddb/dbtables.pyo
-  /usr/lib/python2.5/bsddb/dbutils.py
-  /usr/lib/python2.5/bsddb/dbutils.pyc
-  /usr/lib/python2.5/bsddb/dbutils.pyo
-  /usr/lib/python2.5/lib-dynload/_bsddb.dll
-
-(python-sqlite3)
-  /usr/lib/python2.5/lib-dynload/_sqlite3.dll
-  /usr/lib/python2.5/sqlite3/__init__.py
-  /usr/lib/python2.5/sqlite3/__init__.pyc
-  /usr/lib/python2.5/sqlite3/__init__.pyo
-  /usr/lib/python2.5/sqlite3/dbapi2.py
-  /usr/lib/python2.5/sqlite3/dbapi2.pyc
-  /usr/lib/python2.5/sqlite3/dbapi2.pyo
 
 (python-tkinter)
   /usr/lib/python2.5/lib-dynload/_tkinter.dll
@@ -1870,6 +1862,10 @@ Files included in the binary packages:
 ------------------
 
 Port Notes:
+
+----- version 2.5.2-4 -----
+Implemented ctypes.util.find_library().  The implementation requires that
+the library's import library be installed as well.
 
 ----- version 2.5.2-3 -----
 Added Gentoo patches for CVE-2008-2315, CVE-2008-2316, CVE-2008-3142, 

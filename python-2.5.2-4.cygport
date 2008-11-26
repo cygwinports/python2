@@ -19,6 +19,7 @@ PATCH_URI="
 	2.5.2-no-libm.patch
 	2.5.2-ossaudio.patch
 	2.5.2-tkinter-x11.patch
+	2.5.2-ctypes-util-find_library.patch
 "
 
 SRC_DIR="Python-${PV}"
@@ -28,25 +29,16 @@ pyrootdir=/usr/lib/python${slot}
 pyconfdir=${pyrootdir}/config
 pydylddir=${pyrootdir}/lib-dynload
 
-PKG_NAMES="${PN} ${PN}-doc idle"
-PKG_HINTS="setup doc idle"
-for mod in sqlite3 tkinter test
-do
-	PKG_NAMES+=" ${PN}-${mod}"
-	PKG_HINTS+=" ${mod}"
-done
-unset mod
-n=0
-PKG_CONTENTS[((n++))]="--exclude=idle --exclude=idlelib
-                       --exclude=_sqlite3.dll --exclude=sqlite3
-                       --exclude=_tkinter.dll --exclude=lib-tk
-                       --exclude=test --exclude=tests --exclude=html usr/"
-PKG_CONTENTS[((n++))]="usr/share/doc/${P}/html/"
-PKG_CONTENTS[((n++))]="usr/bin/idle ${pyrootdir#/}/idlelib/"
-PKG_CONTENTS[((n++))]="${pydylddir#/}/_sqlite3.dll ${pyrootdir#/}/sqlite3/*.*"
-PKG_CONTENTS[((n++))]="${pydylddir#/}/_tkinter.dll ${pyrootdir#/}/lib-tk/"
-PKG_CONTENTS[((n++))]="${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/"
-unset n
+PKG_NAMES="${PN} ${PN}-doc ${PN}-tkinter ${PN}-test idle"
+PKG_HINTS="setup doc tkinter test idle"
+python_CONTENTS="--exclude=idle --exclude=idlelib
+                 --exclude=_tkinter.dll --exclude=lib-tk
+                 --exclude=test --exclude=tests --exclude=html usr/"
+python_doc_CONTENTS="usr/share/doc/${P}/html/"
+idle_CONTENTS="usr/bin/idle ${pyrootdir#/}/idlelib/"
+python_tkinter_CONTENTS="${pydylddir#/}/_tkinter.dll ${pyrootdir#/}/lib-tk/"
+python_test_CONTENTS="${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/"
+
 DIFF_EXCLUDES="plat-cygwin pyconfig.h.in"
 
 NO_AUTOHEADER=1

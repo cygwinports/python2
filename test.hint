@@ -1,5 +1,5 @@
 category: Python
-requires: cygwin python python-bsddb python-sqlite3
+requires: python
 external-source: python
 sdesc: "Python tests"
 ldesc: "Python is an interpreted, interactive object-oriented 
