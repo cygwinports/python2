@@ -1,9 +1,0 @@
-category: Python Devel
-requires: cygwin python python-tkinter
-external-source: python
-sdesc: "Python Tkinter-based IDE"
-ldesc: "Python is an interpreted, interactive object-oriented 
-programming language suitable (amongst other uses) for distributed 
-application development, scripting, numeric computing and system 
-testing.  Python is often compared to Tcl, Perl, Java, JavaScript, 
-Visual Basic or Scheme."
