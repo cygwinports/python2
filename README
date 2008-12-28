@@ -13,11 +13,11 @@ Runtime requirements:
   libdb4.5-4.5.20.2-2
   libexpat1-2.0.1-1
   libgdbm4-1.8.3-8
-  libintl8-0.15-1
+  libintl8-0.17-2
   libncurses8-5.5-3
-  libreadline6-5.2.7-9
-  libsqlite3_0-3.5.9-1
-  openssl-0.9.8h-1
+  libreadline6-5.2.13-11
+  libsqlite3_0-3.6.3-1
+  openssl-0.9.8i-1
   zlib-1.2.3-2
 (python-tkinter)
   tcl-8.4.19-2
@@ -29,7 +29,7 @@ Build requirements:
   autoconf2.5-2.63-1
   automake1.9-1.9.6-3
   binutils-20080624-2
-  cygport-0.4.2-1
+  cygport-0.4.3-1
   gawk-3.1.6-1
   gcc-core-3.4.4-3
   make-3.81-1
@@ -1862,6 +1862,9 @@ Files included in the binary packages:
 ------------------
 
 Port Notes:
+
+----- version 2.5.3-1 -----
+Version bump.
 
 ----- version 2.5.2-4 -----
 Implemented ctypes.util.find_library().  The implementation requires that
