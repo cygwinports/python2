@@ -1,23 +1,21 @@
 --- origsrc/Python-2.5.2/Lib/ctypes/util.py	2007-09-14 15:05:26.000000000 -0500
 +++ src/Python-2.5.2/Lib/ctypes/util.py	2008-11-25 17:54:47.319296200 -0600
-@@ -41,6 +41,22 @@
+@@ -41,6 +41,20 @@
                  continue
          return None
  
 +elif sys.platform == "cygwin":
-+    import re
 +    def find_library(name):
-+        for libdir in ['/usr/lib', '/usr/lib/mysql', '/usr/lib/heimdal',
-+                       '/usr/lib/nspr', '/usr/lib/nss']:
++        for libdir in ['/usr/lib', '/usr/local/lib']:
 +            for libext in ['lib%s.dll.a' % name, 'lib%s.a' % name]:
 +                implib = os.path.join(libdir, libext)
 +                if not os.path.exists(implib):
 +                    continue
-+                cmd = "strings 2>/dev/null " + implib
-+                res = re.search(r'\s+(cyg.*\.dll+)\s', os.popen(cmd).read())
++                cmd = "dlltool -I " + implib + " 2>/dev/null"
++                res = os.popen(cmd).read().replace("\n","")
 +                if not res:
 +                    continue
-+                return res.group(1)
++                return res
 +        return None
 +
  elif os.name == "posix":
