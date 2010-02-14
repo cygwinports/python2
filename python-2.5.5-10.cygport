@@ -14,6 +14,7 @@ PATCH_URI="
 	2.5.2-tkinter-x11.patch
 	2.5.2-ctypes-util-find_library.patch
 	2.5.4-gcc4.patch
+	2.5.5-ncurses.patch
 "
 
 SRC_DIR="Python-${PV}"
@@ -36,6 +37,7 @@ python_test_CONTENTS="${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/"
 DIFF_EXCLUDES="plat-cygwin pyconfig.h.in"
 
 NO_AUTOHEADER=1
+CPPFLAGS+=" -I/usr/include/ncurses"
 LDFLAGS+=" -L."
 CYGCONF_ARGS="
 	--enable-shared

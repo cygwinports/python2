@@ -1,5 +1,5 @@
 category: Python Interpreters
-requires: crypt libbz2_1 libdb4.5 libexpat1 libgcc1 libgdbm4 libintl8 libncurses9 libreadline6 libsqlite3_0 openssl zlib0
+requires: crypt libbz2_1 libdb4.5 libexpat1 libgcc1 libgdbm4 libintl8 libncurses10 libreadline7 libsqlite3_0 openssl zlib0
 sdesc: "Python language interpreter"
 ldesc: "Python is an interpreted, interactive object-oriented 
 programming language suitable (amongst other uses) for distributed 
