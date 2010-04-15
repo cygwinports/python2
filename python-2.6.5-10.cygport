@@ -1,0 +1,68 @@
+doc_v=${PV}
+gentoo_python="overlays.gentoo.org/proj/python/browser/patches"
+
+DESCRIPTION="Python programming language"
+HOMEPAGE="http://www.python.org/"
+SRC_URI="http://www.python.org/ftp/python/${PV}/Python-${PV}.tar.bz2
+		 http://docs.python.org/ftp/python/doc/${doc_v}/python-${doc_v}-docs-html.tar.bz2"
+PATCH_URI="
+	http://${gentoo_python}/2.6.5/05_all_verbose_building_of_extensions.patch?format=txt
+	http://${gentoo_python}/2.6.5/07_all_internal-expat.patch?format=txt
+	2.6.1-dbm.patch
+	2.5.2-destdir.patch
+	2.5.2-no-libm.patch
+	2.5.2-tkinter-x11.patch
+	2.5.2-ctypes-util-find_library.patch
+	2.6.2-ssl-threads.patch
+	2.6.5-ncurses-abi6.patch
+	2.6.5-system-libffi.patch
+"
+#	2.6.1-ossaudio.patch
+
+SRC_DIR="Python-${PV}"
+
+slot=${PV_MAJ_MIN}
+pyrootdir=/usr/lib/python${slot}
+pyconfdir=${pyrootdir}/config
+pydylddir=${pyrootdir}/lib-dynload
+
+PKG_NAMES="${PN} ${PN}-tkinter ${PN}-test idle ${PN}-doc"
+PKG_HINTS="setup tkinter test idle" # doc"
+python_CONTENTS="--exclude=idle --exclude=idlelib
+                 --exclude=_tkinter.dll --exclude=lib-tk
+                 --exclude=test --exclude=tests --exclude=html usr/"
+python_doc_CONTENTS="usr/share/doc/${PN}/html/"
+idle_CONTENTS="usr/bin/idle ${pyrootdir#/}/idlelib/"
+python_tkinter_CONTENTS="${pydylddir#/}/_tkinter.dll ${pyrootdir#/}/lib-tk/"
+python_test_CONTENTS="${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/"
+
+DIFF_EXCLUDES="plat-cygwin pyconfig.h.in"
+
+NO_AUTOHEADER=1
+CPPFLAGS+=" -I/usr/include/ncursesw"
+LDFLAGS+=" -L."
+CYGCONF_ARGS="
+	--enable-shared
+	--enable-ipv6
+	--with-libc=
+	--with-libm=
+	--with-system-ffi
+"
+
+src_install() {
+	cd ${B}
+	dodir /usr
+	cygmake -j1 DESTDIR=${D} altinstall maninstall
+
+	dobin ${S}/Tools/i18n/{msgfmt.py,pygettext.py}
+
+	grep -l '^#!' ${D}/usr/bin/* | xargs sed -i -e "s|^#!.*|#! /usr/bin/python${slot}|"
+
+	dosym python${slot}.exe /usr/bin/python
+	dosym python${slot}-config /usr/bin/python-config
+
+	dosym python${slot}/config/libpython${slot}.dll.a /usr/lib/libpython${slot}.dll.a
+
+	dodir /usr/share/doc/${PN}/html
+	cp -r ${S}/../python-${doc_v}-docs-html/* ${D}/usr/share/doc/${PN}/html/
+}
