@@ -7,7 +7,7 @@ SRC_URI="http://www.python.org/ftp/python/${PV}/Python-${PV}.tar.bz2
 		 http://docs.python.org/ftp/python/doc/${doc_v}/python-${doc_v}-docs-html.tar.bz2"
 PATCH_URI="
 	http://${gentoo_python}/2.6.5/05_all_verbose_building_of_extensions.patch?format=txt
-	http://${gentoo_python}/2.6.5/07_all_internal-expat.patch?format=txt
+	http://${gentoo_python}/2.6.5/07_all_internal_expat.patch?format=txt
 	2.6.1-dbm.patch
 	2.5.2-destdir.patch
 	2.5.2-no-libm.patch
@@ -27,7 +27,7 @@ pyconfdir=${pyrootdir}/config
 pydylddir=${pyrootdir}/lib-dynload
 
 PKG_NAMES="${PN} ${PN}-tkinter ${PN}-test idle ${PN}-doc"
-PKG_HINTS="setup tkinter test idle" # doc"
+PKG_HINTS="setup tkinter test idle doc"
 python_CONTENTS="--exclude=idle --exclude=idlelib
                  --exclude=_tkinter.dll --exclude=lib-tk
                  --exclude=test --exclude=tests --exclude=html usr/"
