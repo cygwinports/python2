@@ -6,7 +6,6 @@ HOMEPAGE="http://www.python.org/"
 SRC_URI="http://www.python.org/ftp/python/${PV}/Python-${PV}.tar.bz2
 		 http://docs.python.org/ftp/python/doc/${doc_v}/python-${doc_v}-docs-html.tar.bz2"
 PATCH_URI="
-	http://${gentoo_python}/2.6.5/05_all_verbose_building_of_extensions.patch?format=txt
 	http://${gentoo_python}/2.6.5/07_all_internal_expat.patch?format=txt
 	2.6.1-dbm.patch
 	2.5.2-destdir.patch
@@ -16,6 +15,7 @@ PATCH_URI="
 	2.6.2-ssl-threads.patch
 	2.6.5-ncurses-abi6.patch
 	2.6.5-system-libffi.patch
+	2.6.5-export-PySignal_SetWakeupFd.patch
 "
 #	2.6.1-ossaudio.patch
 
