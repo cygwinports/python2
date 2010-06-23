@@ -1,5 +1,5 @@
 category: Python X11
-requires: python tcl tk tk-tix
+requires: python tcl tcl-tk tcl-tix
 external-source: python
 sdesc: "Python Tkinter GUI module"
 ldesc: "Python is an interpreted, interactive object-oriented 
