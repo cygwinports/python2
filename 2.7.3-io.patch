@@ -1,0 +1,11 @@
+--- Modules/_io/_iomodule.h.orig	2012-11-26 16:31:19.101030900 -0500
++++ Modules/_io/_iomodule.h	2012-11-26 16:31:26.554155900 -0500
+@@ -72,7 +72,7 @@
+     PyObject *filename; /* Not used, but part of the IOError object */
+     Py_ssize_t written;
+ } PyBlockingIOErrorObject;
+-PyAPI_DATA(PyObject *) PyExc_BlockingIOError;
++PyObject * PyExc_BlockingIOError;
+ 
+ /*
+  * Offset type for positioning.
