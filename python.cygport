@@ -18,7 +18,6 @@ PATCH_URI="
 	2.6.5-FD_SETSIZE.patch
 	2.6.5-export-PySignal_SetWakeupFd.patch
 	2.6.5-ncurses-abi6.patch
-	2.6.5-system-libffi.patch
 	2.7.3-dbm.patch
 	2.7.3-dylib.patch
 	2.7.3-getpath-exe-extension.patch
@@ -31,7 +30,7 @@ pyrootdir=/usr/lib/python${slot}
 pyconfdir=${pyrootdir}/config
 pydylddir=${pyrootdir}/lib-dynload
 
-PKG_NAMES="${PN} ${PN}-tkinter ${PN}-test idle ${PN}-doc"
+PKG_NAMES="${PN} ${PN}-tkinter ${PN}-test idle"
 python_CONTENTS="--exclude=idle --exclude=idlelib
                  --exclude=_tkinter.dll --exclude=lib-tk
                  --exclude=test --exclude=tests usr/"
