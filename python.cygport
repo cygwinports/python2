@@ -1,5 +1,5 @@
 NAME="python"
-VERSION=2.7.3
+VERSION=2.7.5
 RELEASE=1
 CATEGORY="Python Interpreters"
 SUMMARY="Python language interpreter"
@@ -9,7 +9,7 @@ application development, scripting, numeric computing and system
 testing.  Python is often compared to Tcl, Perl, Java, JavaScript,
 Visual Basic or Scheme."
 HOMEPAGE="http://www.python.org/"
-SRC_URI="http://www.python.org/ftp/python/${PV}/Python-${VERSION}.tar.bz2"
+SRC_URI="http://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.bz2"
 SRC_DIR="Python-${VERSION}"
 PATCH_URI="
 	2.5.2-ctypes-util-find_library.patch
@@ -21,8 +21,8 @@ PATCH_URI="
 	2.7.3-dbm.patch
 	2.7.3-dylib.patch
 	2.7.3-getpath-exe-extension.patch
-	2.7.3-io.patch
 	2.7.3-no-libm.patch
+	2.7.5-export-PyNode_SizeOf.patch
 "
 
 slot=${PV_MAJ_MIN}
@@ -30,13 +30,14 @@ pyrootdir=/usr/lib/python${slot}
 pyconfdir=${pyrootdir}/config
 pydylddir=${pyrootdir}/lib-dynload
 
-PKG_NAMES="${PN} ${PN}-tkinter ${PN}-test idle"
+PKG_NAMES="${NAME} ${NAME}-tkinter ${NAME}-test idle"
 python_CONTENTS="--exclude=idle --exclude=idlelib
                  --exclude=_tkinter.dll --exclude=lib-tk
                  --exclude=test --exclude=tests usr/"
 idle_SUMMARY="Python Tkinter-based IDE"
 idle_CONTENTS="usr/bin/idle ${pyrootdir#/}/idlelib/"
 python_tkinter_SUMMARY="Python Tkinter GUI module"
+python_tkinter_REQUIRES="tcl-tix"
 python_tkinter_CONTENTS="--exclude=test ${pydylddir#/}/_tkinter.dll ${pyrootdir#/}/lib-tk/"
 python_test_SUMMARY="Python tests"
 python_test_CONTENTS="${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/"
@@ -66,9 +67,13 @@ src_install() {
 
 	grep -l '^#!' ${D}/usr/bin/* | xargs sed -i -e "s|^#!.*|#! /usr/bin/python${slot}|"
 
+	# see PEP 394
 	dosym python${slot}.exe /usr/bin/python
+	dosym python${slot}.exe /usr/bin/python2
 	dosym python${slot}.1 /usr/share/man/man1/python.1
+	dosym python${slot}.1 /usr/share/man/man1/python2.1
 	dosym python${slot}-config /usr/bin/python-config
+	dosym python${slot}-config /usr/bin/python2-config
 
 	dosym python${slot}/config/libpython${slot}.dll.a /usr/lib/libpython${slot}.dll.a
 }
