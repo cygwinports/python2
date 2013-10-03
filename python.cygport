@@ -1,6 +1,6 @@
 NAME="python"
 VERSION=2.7.5
-RELEASE=2
+RELEASE=3
 CATEGORY="Python Interpreters"
 SUMMARY="Python language interpreter"
 DESCRIPTION="Python is an interpreted, interactive object-oriented
@@ -13,6 +13,7 @@ SRC_URI="http://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.bz2"
 SRC_DIR="Python-${VERSION}"
 PATCH_URI="
 	http://bugs.python.org/file31243/CVE-2013-4073_py27.patch
+	http://bugs.python.org/file31377/uuid.patch
 	2.5.2-ctypes-util-find_library.patch
 	2.5.2-tkinter-x11.patch
 	2.6.2-ssl-threads.patch
