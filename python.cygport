@@ -32,6 +32,7 @@ pyconfdir=${pyrootdir}/config
 pydylddir=${pyrootdir}/lib-dynload
 
 PKG_NAMES="${NAME} ${NAME}-tkinter ${NAME}-test idle"
+python_REQUIRES="libuuid-devel" # uuid.py via ctypes.util.find_library
 python_CONTENTS="--exclude=idle --exclude=idlelib
                  --exclude=_tkinter.dll --exclude=lib-tk
                  --exclude=test --exclude=tests usr/"
