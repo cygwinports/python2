@@ -1,5 +1,5 @@
 NAME="python"
-VERSION=2.7.8
+VERSION=2.7.9
 RELEASE=1
 CATEGORY="Python Interpreters"
 SUMMARY="Python language interpreter"
@@ -15,7 +15,6 @@ SRC_DIR="Python-${VERSION}"
 PATCH_URI="
 	2.5.2-ctypes-util-find_library.patch
 	2.5.2-tkinter-x11.patch
-	2.6.2-ssl-threads.patch
 	2.6.5-FD_SETSIZE.patch
 	2.6.5-export-PySignal_SetWakeupFd.patch
 	2.6.5-ncurses-abi6.patch
@@ -23,7 +22,6 @@ PATCH_URI="
 	2.7.3-dylib.patch
 	2.7.3-getpath-exe-extension.patch
 	2.7.3-no-libm.patch
-	2.7.5-export-PyNode_SizeOf.patch
 "
 
 slot=${PV_MAJ_MIN}
@@ -34,20 +32,28 @@ pydylddir=${pyrootdir}/lib-dynload
 PKG_NAMES="${NAME} ${NAME}-tkinter ${NAME}-test idle"
 python_REQUIRES="binutils libuuid-devel" # ctypes.util.find_library, uuid.py
 python_CONTENTS="--exclude=idle --exclude=idlelib
-                 --exclude=_tkinter.dll --exclude=lib-tk
-                 --exclude=test --exclude=tests usr/"
+	--exclude=_tkinter.dll --exclude=lib-tk
+	--exclude=${pyrootdir#/}/*/test
+	--exclude=${pyrootdir#/}/*/tests
+	usr/bin/
+	${pyrootdir#/}/[^t]* ${pyrootdir#/}/t[^e]* ${pyrootdir#/}/te[^s]*
+	${pyrootdir#/}/test/__init__.py*
+	${pyrootdir#/}/test/test_support.py*
+	usr/include/ usr/lib/*.a usr/lib/pkgconfig
+	usr/share/doc/ usr/share/man/"
 idle_SUMMARY="Python Tkinter-based IDE"
-idle_CONTENTS="usr/bin/idle ${pyrootdir#/}/idlelib/"
+idle_CONTENTS="--exclude=idle_test etc/ usr/bin/idle ${pyrootdir#/}/idlelib/ usr/share/applications/ usr/share/icons/"
 python_tkinter_SUMMARY="Python Tkinter GUI module"
 python_tkinter_REQUIRES="tcl-tix"
 python_tkinter_CONTENTS="--exclude=test ${pydylddir#/}/_tkinter.dll ${pyrootdir#/}/lib-tk/"
 python_test_SUMMARY="Python tests"
-python_test_CONTENTS="${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/"
+python_test_CONTENTS="--exclude=${pyrootdir#/}/test/__init__.py*
+	--exclude=${pyrootdir#/}/test/test_support.py*
+	${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/ ${pyrootdir#/}/idlelib/idle_test/"
 
 DIFF_EXCLUDES="plat-cygwin pyconfig.h.in"
 
 NO_AUTOHEADER=1
-CPPFLAGS+=" -I/usr/include/ncursesw"
 LDFLAGS+=" -L."
 CYGCONF_ARGS="
 	--enable-shared
@@ -66,8 +72,7 @@ src_install() {
 	cygmake -j1 DESTDIR=${D} altinstall maninstall
 
 	dobin ${S}/Tools/i18n/{msgfmt.py,pygettext.py}
-
-	grep -l '^#!' ${D}/usr/bin/* | xargs sed -i -e "s|^#!.*|#! /usr/bin/python${slot}|"
+	sed -i -e '1 s/\.exe//' ${D}/usr/bin/*${slot}
 
 	# see PEP 394
 	dosym python${slot}.exe /usr/bin/python
@@ -78,4 +83,11 @@ src_install() {
 	dosym python${slot}-config /usr/bin/python2-config
 
 	dosym python${slot}/config/libpython${slot}.dll.a /usr/lib/libpython${slot}.dll.a
+
+	for i in 16 32 48
+	do
+		insinto /usr/share/icons/hicolor/${i}x${i}/apps
+		newins ${S}/Lib/idlelib/Icons/idle_${i}.png idle.png
+	done
+	make_desktop_entry idle "IDLE ${slot}" idle "Development;IDE"
 }
