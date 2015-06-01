@@ -40,7 +40,8 @@ python_CONTENTS="--exclude=idle --exclude=idlelib
 	${pyrootdir#/}/test/__init__.py*
 	${pyrootdir#/}/test/test_support.py*
 	usr/include/ usr/lib/*.a usr/lib/pkgconfig
-	usr/share/doc/ usr/share/man/"
+	usr/share/doc/ usr/share/man/
+	var/lib/rebase/"
 idle_SUMMARY="Python Tkinter-based IDE"
 idle_CONTENTS="--exclude=idle_test etc/ usr/bin/idle ${pyrootdir#/}/idlelib/ usr/share/applications/ usr/share/icons/"
 python_tkinter_SUMMARY="Python Tkinter GUI module"
@@ -90,4 +91,7 @@ src_install() {
 		newins ${S}/Lib/idlelib/Icons/idle_${i}.png idle.png
 	done
 	make_desktop_entry idle "IDLE ${slot}" idle "Development;IDE"
+
+	dodir /var/lib/rebase/dynpath.d
+	echo ${pyrootdir}/site-packages > ${D}/var/lib/rebase/dynpath.d/${NAME}
 }
