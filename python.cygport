@@ -1,5 +1,5 @@
 NAME="python"
-VERSION=2.7.10
+VERSION=2.7.12
 RELEASE=1
 CATEGORY="Python Interpreters"
 SUMMARY="Python language interpreter"
@@ -29,28 +29,95 @@ pyrootdir=/usr/lib/python${slot}
 pyconfdir=${pyrootdir}/config
 pydylddir=${pyrootdir}/lib-dynload
 
-PKG_NAMES="${NAME} ${NAME}-tkinter ${NAME}-test idle"
+PKG_NAMES="${NAME} ${NAME}-devel ${NAME}-tkinter ${NAME}-test idle"
 python_REQUIRES="binutils libuuid-devel" # ctypes.util.find_library, uuid.py
-python_CONTENTS="--exclude=idle --exclude=idlelib
-	--exclude=_tkinter.dll --exclude=lib-tk
+python_CONTENTS="
+	--exclude=idle --exclude=idlelib
+	--exclude=_tkinter.dll
 	--exclude=${pyrootdir#/}/*/test
 	--exclude=${pyrootdir#/}/*/tests
-	usr/bin/
-	${pyrootdir#/}/[^t]* ${pyrootdir#/}/t[^e]* ${pyrootdir#/}/te[^s]*
+	usr/bin/2to3
+	usr/bin/libpython2.7.dll
+	usr/bin/msgfmt.py
+	usr/bin/pydoc*
+	usr/bin/pygettext.py
+	usr/bin/python
+	usr/bin/python2
+	usr/bin/python2.7.exe
+	usr/bin/smtpd.py
+	usr/include/python${slot}/pyconfig.h
+	${pydylddir#/}/
+	${pyrootdir#/}/bsddb/
+	${pyrootdir#/}/compiler/
+	${pyrootdir#/}/config/Makefile
+	${pyrootdir#/}/ctypes/
+	${pyrootdir#/}/curses/
+	${pyrootdir#/}/distutils/
+	${pyrootdir#/}/email/
+	${pyrootdir#/}/encodings/
+	${pyrootdir#/}/ensurepip/
+	${pyrootdir#/}/hotshot/
+	${pyrootdir#/}/importlib/
+	${pyrootdir#/}/json/
+	${pyrootdir#/}/lib2to3/
+	${pyrootdir#/}/logging/
+	${pyrootdir#/}/multiprocessing/
+	${pyrootdir#/}/plat-cygwin/
+	${pyrootdir#/}/pydoc_data/
+	${pyrootdir#/}/site-packages/
+	${pyrootdir#/}/sqlite3/
 	${pyrootdir#/}/test/__init__.py*
 	${pyrootdir#/}/test/test_support.py*
-	usr/include/ usr/lib/*.a usr/lib/pkgconfig
-	usr/share/doc/ usr/share/man/
+	${pyrootdir#/}/unittest/
+	${pyrootdir#/}/wsgiref/
+	${pyrootdir#/}/wsgiref.egg-info
+	${pyrootdir#/}/xml/
+	${pyrootdir#/}/*.py*
+	${pyrootdir#/}/pdb.doc
+	usr/share/doc/
+	usr/share/man/
 	var/lib/rebase/"
+python_devel_CONTENTS="
+	--exclude=usr/include/python${slot}/pyconfig.h
+	--exclude=${pyrootdir#/}/config/Makefile
+	usr/bin/python*-config
+	usr/include/python${slot}
+	${pyrootdir#/}/config/
+	usr/lib/libpython${slot}.dll.a
+	usr/lib/pkgconfig/*.pc
+"
 idle_SUMMARY="Python Tkinter-based IDE"
-idle_CONTENTS="--exclude=idle_test etc/ usr/bin/idle ${pyrootdir#/}/idlelib/ usr/share/applications/ usr/share/icons/"
+idle_CONTENTS="
+	--exclude=idle_test
+	etc/
+	usr/bin/idle*
+	${pyrootdir#/}/idlelib/
+	usr/share/applications/
+	usr/share/icons/
+"
 python_tkinter_SUMMARY="Python Tkinter GUI module"
 python_tkinter_REQUIRES="tcl-tix"
-python_tkinter_CONTENTS="--exclude=test ${pydylddir#/}/_tkinter.dll ${pyrootdir#/}/lib-tk/"
+python_tkinter_CONTENTS="
+	--exclude=test
+	${pydylddir#/}/_tkinter.dll
+	${pyrootdir#/}/lib-tk/
+"
 python_test_SUMMARY="Python tests"
-python_test_CONTENTS="--exclude=${pyrootdir#/}/test/__init__.py*
+python_test_CONTENTS="
+	--exclude=${pyrootdir#/}/test/__init__.py*
 	--exclude=${pyrootdir#/}/test/test_support.py*
-	${pyrootdir#/}/*/test*/ ${pyrootdir#/}/test/ ${pyrootdir#/}/idlelib/idle_test/"
+	${pyrootdir#/}/bsddb/test/
+	${pyrootdir#/}/ctypes/test/
+	${pyrootdir#/}/distutils/tests/
+	${pyrootdir#/}/email/test/
+	${pyrootdir#/}/idlelib/idle_test/
+	${pyrootdir#/}/json/tests/
+	${pyrootdir#/}/lib-tk/test/
+	${pyrootdir#/}/lib2to3/tests/
+	${pyrootdir#/}/sqlite3/test/
+	${pyrootdir#/}/test/
+	${pyrootdir#/}/unittest/test/
+"
 
 DIFF_EXCLUDES="plat-cygwin pyconfig.h.in"
 
@@ -72,6 +139,8 @@ src_install() {
 	dodir /usr
 	cygmake -j1 DESTDIR=${D} altinstall maninstall
 
+	rm -f ${D}${pyrootdir}/LICENSE.txt
+
 	dobin ${S}/Tools/i18n/{msgfmt.py,pygettext.py}
 	sed -i -e '1 s/\.exe//' ${D}/usr/bin/*${slot}
 
@@ -82,8 +151,17 @@ src_install() {
 	dosym python${slot}.1 /usr/share/man/man1/python2.1
 	dosym python${slot}-config /usr/bin/python-config
 	dosym python${slot}-config /usr/bin/python2-config
+	dosym python-${slot}.pc /usr/lib/pkgconfig/python.pc
+	dosym python-${slot}.pc /usr/lib/pkgconfig/python2.pc
 
 	dosym python${slot}/config/libpython${slot}.dll.a /usr/lib/libpython${slot}.dll.a
+
+	mv ${D}/usr/bin/idle{,${slot}}
+	mv ${D}/usr/bin/pydoc{,${slot}}
+	dosym idle${slot} /usr/bin/idle
+	dosym idle${slot} /usr/bin/idle2
+	dosym pydoc${slot} /usr/bin/pydoc
+	dosym pydoc${slot} /usr/bin/pydoc2
 
 	for i in 16 32 48
 	do
