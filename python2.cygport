@@ -1,8 +1,8 @@
-NAME="python"
+NAME="python2"
 VERSION=2.7.12
 RELEASE=1
 CATEGORY="Python Interpreters"
-SUMMARY="Python language interpreter"
+SUMMARY="Python 2 language interpreter"
 DESCRIPTION="Python is an interpreted, interactive, object-oriented programming
 language. It incorporates modules, exceptions, dynamic typing, very high level
 dynamic data types, and classes. Python combines remarkable power with very
@@ -29,21 +29,29 @@ pyrootdir=/usr/lib/python${slot}
 pyconfdir=${pyrootdir}/config
 pydylddir=${pyrootdir}/lib-dynload
 
-PKG_NAMES="${NAME} ${NAME}-devel ${NAME}-tkinter ${NAME}-test idle"
-python_REQUIRES="binutils libuuid-devel" # ctypes.util.find_library, uuid.py
-python_CONTENTS="
-	--exclude=idle --exclude=idlelib
+PKG_NAMES="${NAME} ${NAME}-devel ${NAME}-tkinter ${NAME}-test idle2"
+python2_REQUIRES="binutils libuuid-devel" # ctypes.util.find_library, uuid.py
+python2_OBSOLETES="python"
+# Unversioned components:
+#	usr/bin/pydoc
+#	usr/bin/python
+#	usr/share/man/man1/python.1*
+# The usr/bin/*.py tools do not exist in python3
+python2_CONTENTS="
+	--exclude=_ctypes_test.dll
 	--exclude=_tkinter.dll
 	--exclude=${pyrootdir#/}/*/test
 	--exclude=${pyrootdir#/}/*/tests
 	usr/bin/2to3
-	usr/bin/libpython2.7.dll
+	usr/bin/libpython${slot}.dll
 	usr/bin/msgfmt.py
-	usr/bin/pydoc*
+	usr/bin/pydoc
+	usr/bin/pydoc2
+	usr/bin/pydoc${slot}
 	usr/bin/pygettext.py
 	usr/bin/python
 	usr/bin/python2
-	usr/bin/python2.7.exe
+	usr/bin/python${slot}.exe
 	usr/bin/smtpd.py
 	usr/include/python${slot}/pyconfig.h
 	${pydylddir#/}/
@@ -75,37 +83,53 @@ python_CONTENTS="
 	${pyrootdir#/}/*.py*
 	${pyrootdir#/}/pdb.doc
 	usr/share/doc/
-	usr/share/man/
-	var/lib/rebase/"
-python_devel_CONTENTS="
+	usr/share/man/man1/python.1*
+	usr/share/man/man1/python2.1*
+	usr/share/man/man1/python${slot}.1*
+	var/lib/rebase/dynpath.d/${NAME}
+"
+python2_devel_OBSOLETES="python-devel"
+# Unversioned components:
+#	usr/bin/python-config
+#	usr/lib/pkgconfig/python.pc
+python2_devel_CONTENTS="
 	--exclude=usr/include/python${slot}/pyconfig.h
 	--exclude=${pyrootdir#/}/config/Makefile
-	usr/bin/python*-config
+	usr/bin/python-config
+	usr/bin/python2-config
+	usr/bin/python${slot}-config
 	usr/include/python${slot}
 	${pyrootdir#/}/config/
 	usr/lib/libpython${slot}.dll.a
-	usr/lib/pkgconfig/*.pc
+	usr/lib/pkgconfig/python.pc
+	usr/lib/pkgconfig/python2.pc
+	usr/lib/pkgconfig/python-${slot}.pc
 "
-idle_SUMMARY="Python Tkinter-based IDE"
-idle_CONTENTS="
+idle2_SUMMARY="Python 2 Tkinter-based IDE"
+idle2_OBSOLETES="idle"
+idle2_CONTENTS="
 	--exclude=idle_test
 	etc/
-	usr/bin/idle*
+	usr/bin/idle2
+	usr/bin/idle${slot}
 	${pyrootdir#/}/idlelib/
-	usr/share/applications/
-	usr/share/icons/
+	usr/share/applications/idle${slot}.desktop
+	usr/share/icons/hicolor/*/apps/idle${slot//.}.png
 "
-python_tkinter_SUMMARY="Python Tkinter GUI module"
-python_tkinter_REQUIRES="tcl-tix"
-python_tkinter_CONTENTS="
+python2_tkinter_SUMMARY="Python 2 Tkinter GUI module"
+python2_tkinter_OBSOLETES="python-tkinter"
+python2_tkinter_REQUIRES="tcl-tix"
+python2_tkinter_CONTENTS="
 	--exclude=test
 	${pydylddir#/}/_tkinter.dll
 	${pyrootdir#/}/lib-tk/
 "
-python_test_SUMMARY="Python tests"
-python_test_CONTENTS="
+python2_test_SUMMARY="Python 2 tests"
+python2_test_OBSOLETES="python-test"
+python2_test_CONTENTS="
 	--exclude=${pyrootdir#/}/test/__init__.py*
 	--exclude=${pyrootdir#/}/test/test_support.py*
+	${pydylddir#/}/_ctypes_test.dll
 	${pyrootdir#/}/bsddb/test/
 	${pyrootdir#/}/ctypes/test/
 	${pyrootdir#/}/distutils/tests/
@@ -158,7 +182,7 @@ src_install() {
 
 	mv ${D}/usr/bin/idle{,${slot}}
 	mv ${D}/usr/bin/pydoc{,${slot}}
-	dosym idle${slot} /usr/bin/idle
+#	dosym idle${slot} /usr/bin/idle
 	dosym idle${slot} /usr/bin/idle2
 	dosym pydoc${slot} /usr/bin/pydoc
 	dosym pydoc${slot} /usr/bin/pydoc2
@@ -166,9 +190,9 @@ src_install() {
 	for i in 16 32 48
 	do
 		insinto /usr/share/icons/hicolor/${i}x${i}/apps
-		newins ${S}/Lib/idlelib/Icons/idle_${i}.png idle.png
+		newins ${S}/Lib/idlelib/Icons/idle_${i}.png idle${slot//.}.png
 	done
-	make_desktop_entry idle "IDLE ${slot}" idle "Development;IDE"
+	make_desktop_entry idle${slot} "IDLE ${slot}" idle${slot//.} "Development;IDE"
 
 	dodir /var/lib/rebase/dynpath.d
 	echo ${pyrootdir}/site-packages > ${D}/var/lib/rebase/dynpath.d/${NAME}
