@@ -1,5 +1,5 @@
 NAME="python2"
-VERSION=2.7.12
+VERSION=2.7.13
 RELEASE=1
 CATEGORY="Python Interpreters"
 SUMMARY="Python 2 language interpreter"
@@ -22,6 +22,7 @@ PATCH_URI="
 	2.7.3-dylib.patch
 	2.7.3-getpath-exe-extension.patch
 	2.7.3-no-libm.patch
+	2.7.13-ftm.patch
 "
 
 slot=${PV_MAJ_MIN}
