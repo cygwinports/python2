@@ -1,5 +1,5 @@
 NAME="python2"
-VERSION=2.7.13
+VERSION=2.7.14
 RELEASE=1
 CATEGORY="Python Interpreters"
 SUMMARY="Python 2 language interpreter"
