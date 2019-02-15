@@ -1,5 +1,5 @@
 NAME="python2"
-VERSION=2.7.14
+VERSION=2.7.15
 RELEASE=1
 CATEGORY="Python Interpreters"
 SUMMARY="Python 2 language interpreter"
@@ -43,17 +43,13 @@ python2_CONTENTS="
 	--exclude=_tkinter.dll
 	--exclude=${pyrootdir#/}/*/test
 	--exclude=${pyrootdir#/}/*/tests
-	usr/bin/2to3
 	usr/bin/libpython${slot}.dll
-	usr/bin/msgfmt.py
 	usr/bin/pydoc
 	usr/bin/pydoc2
 	usr/bin/pydoc${slot}
-	usr/bin/pygettext.py
 	usr/bin/python
 	usr/bin/python2
 	usr/bin/python${slot}.exe
-	usr/bin/smtpd.py
 	usr/include/python${slot}/pyconfig.h
 	${pydylddir#/}/
 	${pyrootdir#/}/bsddb/
@@ -96,9 +92,12 @@ python2_devel_OBSOLETES="python-devel"
 python2_devel_CONTENTS="
 	--exclude=usr/include/python${slot}/pyconfig.h
 	--exclude=${pyrootdir#/}/config/Makefile
+	usr/bin/msgfmt.py
+	usr/bin/pygettext.py
 	usr/bin/python-config
 	usr/bin/python2-config
 	usr/bin/python${slot}-config
+	usr/bin/smtpd.py
 	usr/include/python${slot}
 	${pyrootdir#/}/config/
 	usr/lib/libpython${slot}.dll.a
@@ -108,6 +107,7 @@ python2_devel_CONTENTS="
 "
 idle2_SUMMARY="Python 2 Tkinter-based IDE"
 idle2_OBSOLETES="idle"
+idle2_REQUIRES="python2-tkinter"
 idle2_CONTENTS="
 	--exclude=idle_test
 	etc/
@@ -143,6 +143,8 @@ python2_test_CONTENTS="
 	${pyrootdir#/}/test/
 	${pyrootdir#/}/unittest/test/
 "
+
+REQUIRES_EXCLUDE_FROM="*/distutils/command/*:*/lib2to3/tests/data/*:*/test/*"
 
 DIFF_EXCLUDES="plat-cygwin pyconfig.h.in"
 
@@ -187,6 +189,9 @@ src_install() {
 	dosym idle${slot} /usr/bin/idle2
 	dosym pydoc${slot} /usr/bin/pydoc
 	dosym pydoc${slot} /usr/bin/pydoc2
+
+	# prefer the version in python3
+	rm ${D}/usr/bin/2to3*
 
 	for i in 16 32 48
 	do
