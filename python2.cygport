@@ -92,11 +92,10 @@ python2_devel_CONTENTS="
 	usr/bin/msgfmt.py
 	usr/bin/pygettext.py
 	usr/bin/smtpd.py
+	usr/lib/pkgconfig/python.pc
+	usr/lib/pkgconfig/python2.pc
 "
 python27_devel_REQUIRES="python${slot/.}-setuptools libcrypt-devel"
-# Unversioned components:
-#	usr/bin/python-config
-#	usr/lib/pkgconfig/python.pc
 python27_devel_CONTENTS="
 	--exclude=usr/include/python${slot}/pyconfig.h
 	--exclude=${pyrootdir#/}/config/Makefile
@@ -104,8 +103,6 @@ python27_devel_CONTENTS="
 	usr/include/python${slot}
 	${pyrootdir#/}/config/
 	usr/lib/libpython${slot}.dll.a
-	usr/lib/pkgconfig/python.pc
-	usr/lib/pkgconfig/python2.pc
 	usr/lib/pkgconfig/python-${slot}.pc
 "
 idle2_OBSOLETES="idle"
