@@ -93,7 +93,7 @@ python2_devel_CONTENTS="
 	usr/bin/pygettext.py
 	usr/bin/smtpd.py
 "
-python27_devel_REQUIRES="python${slot/.}-setuptools"
+python27_devel_REQUIRES="python${slot/.}-setuptools libcrypt-devel"
 # Unversioned components:
 #	usr/bin/python-config
 #	usr/lib/pkgconfig/python.pc
