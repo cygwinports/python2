@@ -20,9 +20,9 @@ index 89ed1ef..8008222 100644
  
 +_WHEEL_DIR = "/usr/share/python-wheels/"
  
--_SETUPTOOLS_VERSION = "39.0.1"
+-_SETUPTOOLS_VERSION = "40.6.2"
  
--_PIP_VERSION = "9.0.3"
+-_PIP_VERSION = "18.1"
 +def _get_most_recent_wheel_version(pkg):
 +    prefix = os.path.join(_WHEEL_DIR, "{}-".format(pkg))
 +    suffix = "-py2.py3-none-any.whl"
@@ -37,22 +37,6 @@ index 89ed1ef..8008222 100644
  
  _PROJECTS = [
      ("setuptools", _SETUPTOOLS_VERSION),
-@@ -28,8 +39,13 @@ def _run_pip(args, additional_paths=None):
-         sys.path = additional_paths + sys.path
- 
-     # Install the bundled software
--    import pip
--    return pip.main(args)
-+    try:
-+        # pip 10
-+        from pip._internal import main
-+    except ImportError:
-+        # pip 9
-+        from pip import main
-+    return main(args)
- 
- 
- def version():
 @@ -100,12 +116,9 @@ def _bootstrap(root=None, upgrade=False, user=False,
          additional_paths = []
          for project, version in _PROJECTS:
